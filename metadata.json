@@ -1,0 +1,5 @@
+{
+  "name": "Balanced Bowl",
+  "description": "An application to discover recipes, generate meal plans, explore cooking resources, and chat with an AI-powered cooking assistant.",
+  "requestFramePermissions": []
+}
