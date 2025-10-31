@@ -28,6 +28,7 @@ export interface RecipeCardInfo {
   calories?: number;
   averageRating?: number;
   ratingCount?: number;
+  servings?: number;
 }
 
 export interface Ingredient {

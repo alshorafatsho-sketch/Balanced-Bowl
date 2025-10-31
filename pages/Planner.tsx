@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../hooks/useAppContext';
 import { DAYS_OF_WEEK, MEAL_TYPES } from '../constants';
 import { XCircleIcon } from '@heroicons/react/24/solid';
+import { ClockIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 import { RecipeCardInfo, Day, MealType } from '../types';
 
 const Planner: React.FC = () => {
@@ -23,11 +24,25 @@ const Planner: React.FC = () => {
   };
 
   const MealCard: React.FC<{ recipe: RecipeCardInfo, onRemove: () => void }> = ({ recipe, onRemove }) => (
-    <div className="relative group bg-white rounded-lg shadow-sm overflow-hidden h-full">
+    <div className="relative group bg-white rounded-lg shadow-sm overflow-hidden h-full flex flex-col">
       <Link to={`/recipe/${recipe.id}`} className="block h-full">
         <img src={recipe.image} alt={recipe.title} className="w-full h-24 object-cover"/>
-        <div className="p-2">
-            <p className="text-xs font-semibold text-gray-800 leading-tight truncate">{recipe.title}</p>
+        <div className="p-2 flex flex-col flex-grow">
+            <p className="text-xs font-semibold text-gray-800 leading-tight truncate mb-2">{recipe.title}</p>
+            <div className="mt-auto text-xs text-gray-500 space-y-1">
+              {recipe.readyInMinutes && (
+                <div className="flex items-center">
+                  <ClockIcon className="h-3 w-3 mr-1" />
+                  <span>{recipe.readyInMinutes} min</span>
+                </div>
+              )}
+              {recipe.servings && (
+                <div className="flex items-center">
+                  <UserGroupIcon className="h-3 w-3 mr-1" />
+                  <span>{recipe.servings} servings</span>
+                </div>
+              )}
+            </div>
         </div>
       </Link>
       <button onClick={onRemove} className="absolute top-1 right-1 bg-white/70 rounded-full text-red-500 opacity-0 group-hover:opacity-100 transition-opacity z-10">
@@ -72,7 +87,7 @@ const Planner: React.FC = () => {
               {DAYS_OF_WEEK.map(day => {
                 const meal = getMealForSlot(day, mealType);
                 return (
-                  <div key={`${day}-${mealType}`} className="p-2 min-h-[150px] border-b border-l">
+                  <div key={`${day}-${mealType}`} className="p-2 min-h-[170px] border-b border-l">
                     {meal ? <MealCard recipe={meal.recipe} onRemove={() => handleRemove(day, mealType)} /> : <EmptySlot />}
                   </div>
                 );

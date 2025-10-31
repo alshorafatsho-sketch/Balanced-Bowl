@@ -30,11 +30,20 @@ export const searchRecipes = async (query: string, diet?: string): Promise<any> 
     return data;
 };
 
-export const findRecipesByIngredients = async (ingredients: string[], number: number = 10): Promise<any[]> => {
-  const ingredientsString = ingredients.join(',');
-  const response = await fetch(`${BASE_URL}/recipes/findByIngredients?ingredients=${ingredientsString}&number=${number}&ranking=1&addRecipeInformation=true&apiKey=${SPOONACULAR_API_KEY}`);
-  const data = await handleResponse<any[]>(response);
-  return enhanceRecipeListData(data);
+export const findRecipesByIngredients = async (
+    ingredients: string[],
+    number: number = 10,
+    diet?: string | null,
+    cuisine?: string | null,
+  ): Promise<any[]> => {
+    const ingredientsString = ingredients.join(',');
+    let url = `${BASE_URL}/recipes/complexSearch?includeIngredients=${ingredientsString}&number=${number}&addRecipeInformation=true&apiKey=${SPOONACULAR_API_KEY}`;
+    if (diet) url += `&diet=${diet}`;
+    if (cuisine) url += `&cuisine=${cuisine}`;
+    
+    const response = await fetch(url);
+    const data = await handleResponse<{ results: any[] }>(response);
+    return enhanceRecipeListData(data.results);
 };
 
 export const getRecipeDetails = async (id: string): Promise<Recipe> => {

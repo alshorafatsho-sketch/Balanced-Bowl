@@ -75,7 +75,20 @@ const RecipeDetail: React.FC = () => {
 
   const addToPlanner = (day: Day, mealType: MealType) => {
     if (recipe) {
-      dispatch({ type: 'ADD_TO_PLANNER', payload: { day, mealType, recipe: { id: recipe.id, title: recipe.title, image: recipe.image } } });
+      dispatch({ 
+        type: 'ADD_TO_PLANNER', 
+        payload: { 
+          day, 
+          mealType, 
+          recipe: { 
+            id: recipe.id, 
+            title: recipe.title, 
+            image: recipe.image, 
+            readyInMinutes: recipe.readyInMinutes,
+            servings: recipe.servings 
+          } 
+        } 
+      });
       setShowPlannerModal(false);
     }
   };
